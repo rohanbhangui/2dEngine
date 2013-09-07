@@ -2,15 +2,15 @@
 
 <html>
 <head>
-  <title>Code Player</title>
-  
+  <title>PlayMat</title>
+  <meta name="viewport" content="maximum-scale=1">
   <!-- jquery libraries -->
   <script type="text/javascript" src="lib/jquery-1.10.2.js"></script>
   <script type="text/javascript" src="lib/jquery-migrate-1.1.0.js"></script>
 
   <!-- my scripts -->
-  <script type="text/javascript" src="base.js"></script>
   <script type="text/javascript" src="objects.js"></script>
+  <script type="text/javascript" src="base.js"></script>
 
   <!-- my stylesheets -->
   <link rel="stylesheet" media="screen" type="text/css" href="base.css"/>
@@ -19,7 +19,10 @@
 
 </head>
 <body id="main">
-  <div id="canvasContainer">
+  <div id="content">
+    <div class="playMatObject" playMatObject="player">
+      <img src="arrow.png" />
+    </div>
   </div>
 </body>
 </html>
