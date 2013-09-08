@@ -11,57 +11,44 @@
 
     var playMatObjects = playMat.children();
 
-    var player = playMat.children("div[playMatObject='player'");
+    var player = playMat.children(".playMatObjectPlayer");
+
+    player.css('transform', 'translate(' + (0.5*settings.width-(0.5*player.width())) + 'px,' + (0.5*settings.height-(0.5*player.height())) + 'px)');
 
     playMatObjects.css("position","relative");
-
-    var xInitial = parseInt(player.css("top"));
-    var yInitial = parseInt(player.css("left"));
-
-    var transformation = "translate(" + 200/*(xFinal-(0.5*player.width()))*/ + "px, " + 200/*(yFinal-(0.5*player.height()))*/ + "px)";
-
-    $(".playMatObject").css('-webkit-transform', transformation);
-    $(".playMatObject").css('-moz-transform', transformation);
-    $(".playMatObject").css('-o-transform', transformation);
-    $(".playMatObject").css('-ms-transform', transformation);
-    $(".playMatObject").css('transform', transformation);
     
-    var previousAngle = 0;
+    var lastangle = 0;
 
     playMat[0].ontouchstart = function(e) {
 
-      var touche= e.touches[0];
+      var touche = e.touches[0];
 
-      console.log(touche);
+      var divX = player.offset().left + parseInt(player.width() / 2, 10);
+      var divY = player.offset().top + parseInt(player.height() / 2, 10);
 
-      var xFinal = touche.clientX;
-      var yFinal = touche.clientY;
+      var touchX = touche.clientX;
+      var touchY = touche.clientY;
 
-      var deltaY = yFinal - yInitial;
-      var deltaX = xFinal - xInitial;
+      // calc angle
 
-      var angleInDegrees = Math.atan2(deltaY, deltaX);
-
-      angleInDegrees *= 180/Math.PI;
-
-      angleInDegrees = angleInDegrees - previousAngle;
-
-      console.log(angleInDegrees);
-
-      var transformation = "translate(" + 200/*(xFinal-(0.5*player.width()))*/ + "px, " + 200/*(yFinal-(0.5*player.height()))*/ + "px) rotate(" + angleInDegrees + "deg)";
-
-      $(".playMatObject").css('-webkit-transform', transformation);
-      $(".playMatObject").css('-moz-transform', transformation);
-      $(".playMatObject").css('-o-transform', transformation);
-      $(".playMatObject").css('-ms-transform', transformation);
-      $(".playMatObject").css('transform', transformation);
+      var deltaY = touchY - divY;
+      var deltaX = touchX - divX;
       
-      //xInitial = xFinal;
-      //yInitial = yFinal;
-      xInitial = 200;
-      yInitial = 200;
+      var offset = Math.floor(lastangle / 360) * 360;
+      var angleInDegrees = Math.atan2(deltaY, deltaX) * (180 / Math.PI) + offset;
 
-      previousAngle = angleInDegrees;
+      var cwangle = angleInDegrees < lastangle ? angleInDegrees + 360 : angleInDegrees;
+      var ccwangle = angleInDegrees > lastangle ? angleInDegrees - 360 : angleInDegrees;
+      
+      if (Math.abs(cwangle - lastangle) < Math.abs(ccwangle - lastangle)) {
+          angleInDegrees = cwangle;
+      } else {
+          angleInDegrees = ccwangle;
+      }
+      
+      lastangle = angleInDegrees;
+
+      player.css('transform', 'translate(' + (touchX-(0.5*player.width())) + 'px,' + (touchY-(0.5*player.height())) + "px) " + ' rotate('+ angleInDegrees +'deg)');
     }    
 
     playMat[0].ontouchmove = function(e) {

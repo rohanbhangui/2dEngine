@@ -17,7 +17,7 @@ div[playMatObject="player"]
   border: 1px solid #ff0000;
 }
 
-.playMatObject {
+.playMatObjectPlayer {
     /* Firefox */
   -moz-transition: all 0.8s ease;
   /* WebKit */
